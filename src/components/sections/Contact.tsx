@@ -15,20 +15,25 @@ export default function Contact() {
     setIsSubmitting(true);
     setStatus("idle");
 
-    const formData = new FormData(e.currentTarget);
-    const result = await sendTelegramMessage(formData);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    try {
+      const result = await sendTelegramMessage(formData);
 
-    if (result?.success) {
-      setStatus("success");
-      e.currentTarget.reset(); // Limpia el formulario
-    } else {
+      if (result?.success) {
+        setStatus("success");
+        form.reset(); // Limpia el formulario de forma segura
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
       setStatus("error");
+    } finally {
+      setIsSubmitting(false);
+      // Quitar el mensaje de estado después de 5 segundos
+      setTimeout(() => setStatus("idle"), 5000);
     }
-    
-    setIsSubmitting(false);
-    
-    // Quitar el mensaje de estado después de 5 segundos
-    setTimeout(() => setStatus("idle"), 5000);
   }
 
   return (
