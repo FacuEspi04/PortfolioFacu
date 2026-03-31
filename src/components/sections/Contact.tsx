@@ -1,11 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { a } from "framer-motion/client";
-import { Mail, Send } from "lucide-react";
+import { Mail, Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { useState } from "react";
+import { sendTelegramMessage } from "@/app/actions/telegram";
 
 export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatus("idle");
+
+    const formData = new FormData(e.currentTarget);
+    const result = await sendTelegramMessage(formData);
+
+    if (result?.success) {
+      setStatus("success");
+      e.currentTarget.reset(); // Limpia el formulario
+    } else {
+      setStatus("error");
+    }
+    
+    setIsSubmitting(false);
+    
+    // Quitar el mensaje de estado después de 5 segundos
+    setTimeout(() => setStatus("idle"), 5000);
+  }
+
   return (
     <section id="contact" className="py-24 relative">
       <div className="max-w-4xl mx-auto px-6">
@@ -34,12 +59,14 @@ export default function Contact() {
             transition={{ duration: 0.5, ease: "easeOut" as const }}
             className="p-6 md:p-8 rounded-2xl bg-muted/20 border border-muted/50"
           >
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-1">Nombre</label>
                 <input 
                   type="text" 
-                  id="name" 
+                  id="name"
+                  name="name"
+                  required
                   className="w-full px-4 py-2 bg-zinc-900/50 border border-muted/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600" 
                   placeholder="Tu nombre"
                 />
@@ -49,6 +76,8 @@ export default function Contact() {
                 <input 
                   type="email" 
                   id="email" 
+                  name="email"
+                  required
                   className="w-full px-4 py-2 bg-zinc-900/50 border border-muted/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600" 
                   placeholder="tu@email.com"
                 />
@@ -57,6 +86,8 @@ export default function Contact() {
                 <label htmlFor="message" className="block text-sm font-medium text-zinc-300 mb-1">Mensaje</label>
                 <textarea 
                   id="message" 
+                  name="message"
+                  required
                   rows={4} 
                   className="w-full px-4 py-2 bg-zinc-900/50 border border-muted/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all text-white placeholder:text-zinc-600 resize-none" 
                   placeholder="¿Cómo puedo ayudarte?"
@@ -64,11 +95,26 @@ export default function Contact() {
               </div>
               <button 
                 type="submit" 
-                className="w-full py-3 px-4 bg-accent hover:bg-accent-hover text-zinc-950 font-medium rounded-lg flex items-center justify-center gap-2 transition-colors group"
+                disabled={isSubmitting}
+                className="w-full py-3 px-4 bg-accent hover:bg-accent-hover disabled:bg-accent/50 disabled:cursor-not-allowed text-zinc-950 font-medium rounded-lg flex items-center justify-center gap-2 transition-colors group"
               >
-                <span>Enviar Mensaje</span>
-                <Send size={18} className="group-hover:translate-x-1 transition-transform" />
+                <span>{isSubmitting ? "Enviando..." : "Enviar Mensaje"}</span>
+                {!isSubmitting && <Send size={18} className="group-hover:translate-x-1 transition-transform" />}
               </button>
+
+              {/* Mensajes de Feedback */}
+              {status === "success" && (
+                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 text-green-400 text-sm mt-4 p-3 bg-green-400/10 rounded-lg border border-green-400/20">
+                  <CheckCircle2 size={16} />
+                  <span>¡Mensaje enviado con éxito! Te responderé pronto.</span>
+                </motion.div>
+              )}
+              {status === "error" && (
+                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 text-red-400 text-sm mt-4 p-3 bg-red-400/10 rounded-lg border border-red-400/20">
+                  <AlertCircle size={16} />
+                  <span>Hubo un error al enviar. Revisa la configuración.</span>
+                </motion.div>
+              )}
             </form>
           </motion.div>
 
