@@ -10,6 +10,7 @@ const projects = [
     description: "Sistema integral para la gestión de comercios. Incluye punto de venta híbrido (lector de barras/predictivo), control de stock, gestión de proveedores y cuentas corrientes.",
     tags: ["NestJS", "React", "TypeScript", "SQLite", "TypeORM", "Tailwind"],
     repo: "https://github.com/FacuEspi04/GestorNegocios.git",
+    demo: null,
     image: "/assets/POS.png"
   },
   {
@@ -24,9 +25,9 @@ const projects = [
     title: "AI Automation Workflow",
     description: "Flujo automatizado con n8n que procesa correos entrantes, clasifica el tono con IA y responde al cliente.",
     tags: ["n8n", "OpenAI", "Node.js", "AWS"],
-    repo: "https://github.com/tu-usuario/ai-workflow",
-    demo: "https://youtube.com/watch?v=demo",
-    image: "https://images.unsplash.com/photo-1620712948343-0056ce66114d?q=80&w=800&auto=format&fit=crop"
+    repo: "https://github.com/tu-usuario/n8n-project",
+    demo: null,
+    image: "/assets/n8nIA.png"
   }
 ];
 

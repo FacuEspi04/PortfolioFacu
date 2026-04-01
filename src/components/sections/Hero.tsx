@@ -67,13 +67,15 @@ export function Hero() {
               Ver mis proyectos
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
-            
-            <Link
-              href="#contact"
+            <a
+              href="/Facundo Espínola - CV.pdf"
+              download="/Facundo Espínola - CV.pdf"
               className="inline-flex h-12 w-full sm:w-auto items-center justify-center rounded-lg border border-muted bg-transparent px-8 font-medium text-foreground transition-all hover:bg-muted focus:outline-none focus:ring-2 focus:ring-muted focus:ring-offset-2 hover:text-accent"
+              aria-label="Descargar CV en PDF"
             >
-              Contactarme
-            </Link>
+              Descargar CV
+              <Download className="ml-2 h-4 w-4" />
+            </a>
           </motion.div>
         </motion.div>
       </div>
