@@ -68,8 +68,8 @@ export function Hero() {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
             <a
-              href="/Facundo Espínola - CV.pdf"
-              download="/Facundo Espínola - CV.pdf"
+              href="/CV FacundoEspinola.pdf"
+              download="/CV FacundoEspinola.pdf"
               className="inline-flex h-12 w-full sm:w-auto items-center justify-center rounded-lg border border-muted bg-transparent px-8 font-medium text-foreground transition-all hover:bg-muted focus:outline-none focus:ring-2 focus:ring-muted focus:ring-offset-2 hover:text-accent"
               aria-label="Descargar CV en PDF"
             >
